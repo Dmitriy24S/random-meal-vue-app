@@ -1,0 +1,1 @@
+<template>Guest Page</template>
