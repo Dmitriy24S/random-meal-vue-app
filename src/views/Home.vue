@@ -42,9 +42,7 @@
           Clear
         </button>
       </div>
-      <div
-        class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2"
-      >
+      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-2">
         <!-- Meal Card -->
         <div
           v-for="meal of meals"

@@ -2,12 +2,14 @@
   <!-- Meal Details -->
   <template v-if="mealDetails">
     <!-- Meal Card -->
-    <div class="outline outline-gray-200 rounded shadow-md transition overflow-hidden">
+    <div
+      class="outline outline-gray-200 rounded shadow-md transition overflow-hidden md:flex sm:items-start"
+    >
       <img
         :src="mealDetails.strMealThumb"
         loading="lazy"
         alt="Meal Thumbnail"
-        class="h-[300px] sm:h-[500px] w-full object-cover"
+        class="h-[300px] md:h-[350px] w-full object-cover md:w-1/2"
       />
       <div class="p-4">
         <h4 class="font-semibold">
