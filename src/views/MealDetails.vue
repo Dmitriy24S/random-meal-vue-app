@@ -3,7 +3,7 @@
   <template v-if="mealDetails">
     <!-- Meal Card -->
     <div
-      class="outline outline-gray-200 rounded shadow-md transition overflow-hidden md:flex sm:items-start"
+      class="rounded shadow-md transition overflow-hidden md:flex sm:items-start bg-white"
     >
       <img
         :src="mealDetails.strMealThumb"

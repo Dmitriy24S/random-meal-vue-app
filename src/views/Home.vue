@@ -2,7 +2,7 @@
   <div class="flex flex-col">
     <!-- Search -->
     <form @submit="searchMeals" class="w-full flex justify-center">
-      <div class="relative border-2 border-gray-200 bg-white rounded">
+      <div class="relative bg-white rounded">
         <div class="relative mr-[4.5rem]">
           <input
             type="text"
@@ -48,7 +48,7 @@
           v-for="meal of meals"
           :key="meal.idMeal"
           @click="redirectToMealDetails($event, meal.idMeal)"
-          class="outline outline-gray-200 rounded shadow-md hover:-translate-y-1 transition duration-300 overflow-hidden"
+          class="outline outline-gray-200 rounded shadow-md hover:-translate-y-1 transition duration-300 overflow-hidden bg-white"
         >
           <img
             :src="meal.strMealThumb"
