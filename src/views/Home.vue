@@ -75,7 +75,7 @@
 <!-- composition api -->
 <script setup>
 import { useRouter } from 'vue-router'
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import store from '../store'
 
 const router = useRouter() // Access the router instance
@@ -107,6 +107,10 @@ function redirectToMealDetails(event, mealId) {
   event.stopPropagation()
   router.push(`/meal/${mealId}`)
 }
+
+onMounted(() => {
+  store.dispatch('getMealDetails', null)
+})
 </script>
 
 <style lang=""></style>

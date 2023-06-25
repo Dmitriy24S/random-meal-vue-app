@@ -5,16 +5,59 @@
     <div
       class="rounded shadow-md transition overflow-hidden md:flex sm:items-start bg-white"
     >
-      <img
-        :src="mealDetails.strMealThumb"
-        loading="lazy"
-        alt="Meal Thumbnail"
-        class="h-[300px] md:h-[350px] w-full object-cover md:w-1/2"
-      />
-      <div class="p-4">
-        <h4 class="font-semibold">
-          {{ mealDetails.strMeal }}
-        </h4>
+      <!-- Image, Area/Category, Tags-->
+      <div class="flex flex-col gap-1 w-full md:w-1/2">
+        <!-- Image -->
+        <img
+          :src="mealDetails.strMealThumb"
+          loading="lazy"
+          alt="Meal Thumbnail"
+          class="h-[300px] md:h-[350px] object-cover"
+        />
+        <div class="flex flex-col gap-2 px-4">
+          <!-- Area/Category -->
+          <div class="flex justify-between gap-2">
+            <p>Area: {{ mealDetails.strArea }}</p>
+            <p>Category: {{ mealDetails.strCategory }}</p>
+          </div>
+          <!-- Tags -->
+          <div v-if="mealDetails.strTags" class="flex gap-1">
+            <h4 class="font-semibold">Tags</h4>
+            <p>
+              {{ mealDetails.strTags }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Details -->
+      <div class="flex flex-col gap-4 p-4 md:w-1/2">
+        <div class="flex flex-col gap-1">
+          <h3 class="font-semibold capitalize text-2xl">
+            {{ mealDetails.strMeal }}
+          </h3>
+        </div>
+        <div class="flex flex-col gap-1">
+          <h4 class="font-semibold">Instructions</h4>
+          <p>
+            {{ mealDetails.strInstructions }}
+          </p>
+        </div>
+        <!-- Ingredients & Measurements-->
+        <table v-if="computedIngredients.length > 0 && computedMeasurements.length > 0">
+          <tr>
+            <th>Ingredients</th>
+            <th>Measurements</th>
+          </tr>
+          <!-- {{ computedIngredients.map((ingredient,index) => ( -->
+          <template v-for="(ingredient, index) in computedIngredients" :key="index">
+            <tr class="text-center">
+              <td>
+                {{ ingredient }}
+              </td>
+              <td>{{ computedMeasurements[index] }}</td>
+            </tr>
+          </template>
+        </table>
       </div>
     </div>
   </template>
@@ -64,6 +107,51 @@ import store from '../store'
 const route = useRoute()
 const mealId = ref('')
 const mealDetails = computed(() => store.state.mealDetails)
+console.log('mealDetails', mealDetails.value)
+
+// let ingredients = []
+// let measurements = []
+// if (mealDetails) {
+//   console.log('Object.entries(mealDetails)', Object.entries(mealDetails))
+//   ingredients = Object.entries(mealDetails)
+//     .filter(([key, value]) => key.startsWith('strIngredient'))
+//     .map(([key, value]) => value)
+//     .filter((value) => value !== '' && value !== null)
+//   measurements = Object.entries(mealDetails)
+//     .filter(([key, value]) => key.startsWith('strMeasure'))
+//     .map(([key, value]) => value)
+//   // .filter((value) => value !== '')
+// }
+
+const computedIngredients = computed(() => {
+  if (mealDetails.value) {
+    return Object.entries(mealDetails.value)
+      .filter(([key, value]) => key.startsWith('strIngredient'))
+      .map(([key, value]) => value)
+      .filter((value) => value !== '' && value !== null)
+  } else {
+    return []
+  }
+})
+// [ "Butter", "Sour Cream", "Sugar", "Cream Cheese", "Caster Sugar", "Plain Flour", "Lemon Juice", "Eggs", "Sour Cream", "Sour Cream", "Caster Sugar", "Lemon Juice" ]
+
+const computedMeasurements = computed(() => {
+  if (mealDetails.value) {
+    // console.log('Object.entries(mealDetails.value)', Object.entries(mealDetails.value))
+    // (53) [Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), ...]
+    // 0: (2) ['idMeal', '52858']
+    // 1: (2) ['strMeal', 'New York cheesecake']
+    // 2: (2) ['strDrinkAlternate', null]
+    // 3: (2) ['strCategory', 'Dessert']
+    // 4: (2) ['strArea', 'American']
+    return Object.entries(mealDetails.value)
+      .filter(([key, value]) => key.startsWith('strMeasure'))
+      .map(([key, value]) => value)
+  } else {
+    return []
+  }
+})
+// [ "85g", "140g", "1tbsp", "900g", "250g", "3 tbs", "1 ½ teaspoons", "3 Large", "250ml", "150ml", "1 tbsp", "2 tsp", "", "", "", "", "", "", "", "" ]
 
 onMounted(() => {
   mealId.value = route.params.id

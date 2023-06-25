@@ -21,5 +21,6 @@ export async function getMealDetails({ commit }, id) {
     commit('setMealDetails', response.data.meals[0])
   } catch (error) {
     console.log('getMealDetails action error', error)
+    commit('setMealDetails', null) // reset meal details, i.e details -> home -> details
   }
 }
