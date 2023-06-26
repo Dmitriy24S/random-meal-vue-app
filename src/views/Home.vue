@@ -109,7 +109,9 @@ function redirectToMealDetails(event, mealId) {
 }
 
 onMounted(() => {
-  store.dispatch('getMealDetails', null)
+  // store.dispatch('getMealDetails', null)
+  // store.dispatch('searchMeals', []) // ! specific 25 array items sets
+  store.dispatch('resetMealDetails')
 })
 </script>
 
