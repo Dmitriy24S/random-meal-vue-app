@@ -43,7 +43,10 @@
           </p>
         </div>
         <!-- Ingredients & Measurements-->
-        <table v-if="computedIngredients.length > 0 && computedMeasurements.length > 0">
+        <table
+          aria-describedby="ingredients and measurements"
+          v-if="computedIngredients.length > 0 && computedMeasurements.length > 0"
+        >
           <tr>
             <th>Ingredients</th>
             <th>Measurements</th>
@@ -102,7 +105,7 @@
 
 <script setup>
 import { useRoute } from 'vue-router'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, onUnmounted } from 'vue'
 import store from '../store'
 const route = useRoute()
 const mealId = ref('')
@@ -158,5 +161,10 @@ onMounted(() => {
   if (mealId.value) {
     store.dispatch('getMealDetails', mealId.value)
   }
+})
+onUnmounted(() => {
+  // store.dispatch('getMealDetails', null)
+  // store.dispatch('searchMeals', []) // ! specific 25 array items sets
+  store.dispatch('resetMealDetails')
 })
 </script>

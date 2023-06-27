@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col">
     <!-- Search -->
-    <form @submit="searchMeals" class="w-full flex justify-center">
+    <form @submit.prevent="searchMeals" class="w-full flex justify-center">
       <div class="relative bg-white rounded">
         <div class="relative mr-[4.5rem]">
           <input
@@ -42,51 +42,24 @@
           Clear
         </button>
       </div>
-      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-2">
-        <!-- Meal Card -->
-        <div
-          v-for="meal of meals"
-          :key="meal.idMeal"
-          @click="redirectToMealDetails($event, meal.idMeal)"
-          class="outline outline-gray-200 rounded shadow-md hover:-translate-y-1 transition duration-300 overflow-hidden bg-white"
-        >
-          <img
-            :src="meal.strMealThumb"
-            loading="lazy"
-            alt="Meal Thumbnail"
-            class="h-[300px] w-full object-cover"
-          />
-          <div class="p-4">
-            <router-link
-              :to="{ name: 'mealDetails', params: { id: meal.idMeal } }"
-              @click="redirectToMealDetails($event, meal.idMeal)"
-            >
-              <h4 class="font-semibold">
-                {{ meal.strMeal }}
-              </h4>
-            </router-link>
-          </div>
-        </div>
-      </div>
+      <MealList :meals="meals" />
     </div>
   </div>
 </template>
 
 <!-- composition api -->
 <script setup>
-import { useRouter } from 'vue-router'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onUnmounted } from 'vue'
 import store from '../store'
+import MealList from '../components/MealList.vue'
 
-const router = useRouter() // Access the router instance
 const meals = computed(() => store.state.searchedMeals)
 
 // search
 const searchValue = ref('')
 const searchQuery = ref('')
 
-function searchMeals(e) {
-  e.preventDefault()
+function searchMeals() {
   if (!searchValue.value.trim()) return
   searchQuery.value = searchValue.value
   store.dispatch('searchMeals', searchValue.value)
@@ -102,16 +75,8 @@ function clearResults() {
   store.dispatch('resetSearchedMeals')
 }
 
-// redirect to details
-function redirectToMealDetails(event, mealId) {
-  event.stopPropagation()
-  router.push(`/meal/${mealId}`)
-}
-
-onMounted(() => {
-  // store.dispatch('getMealDetails', null)
-  // store.dispatch('searchMeals', []) // ! specific 25 array items sets
-  store.dispatch('resetMealDetails')
+onUnmounted(() => {
+  store.dispatch('resetSearchedMeals')
 })
 </script>
 

@@ -42,6 +42,6 @@ export async function searchMealsByLetter({ commit }, letter) {
     commit('setSearchedMeals', response.data.meals)
   } catch (error) {
     console.log('getMealsByLetter action error', error)
-    commit('setSearchedMeals', null) // reset meal details, i.e details -> home -> details
+    commit('setSearchedMeals', []) // reset meal details, i.e details -> home -> details
   }
 }

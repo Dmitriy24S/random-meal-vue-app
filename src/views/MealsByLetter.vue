@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import store from '../store'
 import MealList from '../components/MealList.vue'
@@ -53,6 +53,9 @@ onMounted(() => {
   if (route.params.letter) {
     store.dispatch('searchMealsByLetter', route.params.letter)
   }
+})
+onUnmounted(() => {
+  store.dispatch('resetSearchedMeals') // without this still resets because of watch route?
 })
 </script>
 
