@@ -5,7 +5,11 @@ export async function searchMeals({ commit }, keyword) {
     if (!keyword) return new Error('no keyword')
     const response = await axiosClient.get(`search.php?s=${keyword}`)
     // debugger
-    commit('setSearchedMeals', response.data.meals)
+    if (response.data.meals === null) {
+      commit('setSearchedMeals', [])
+    } else {
+      commit('setSearchedMeals', response.data.meals)
+    }
   } catch (error) {
     console.log('searchMeals action error', error)
     commit('setSearchedMeals', [])
@@ -14,10 +18,12 @@ export async function searchMeals({ commit }, keyword) {
 
 export function resetSearchedMeals({ commit }) {
   commit('setSearchedMeals', [])
+  commit('setFetchStatusIdle')
 }
 
 export function resetMealDetails({ commit }) {
   commit('setMealDetails', null)
+  commit('setFetchStatusIdle')
 }
 
 export async function getMealDetails({ commit }, id) {
@@ -39,9 +45,29 @@ export async function searchMealsByLetter({ commit }, letter) {
     const response = await axiosClient.get(`/search.php?f=${letter}`)
     // console.log('searchMealsByLetter response', response) // data: meals: Array(17)
     // debugger
-    commit('setSearchedMeals', response.data.meals)
+    // console.log('response.data.meals', response.data.meals) // null when get meals by url http://localhost:5173/by-letter/X
+    if (response.data.meals === null) {
+      commit('setSearchedMeals', [])
+    } else {
+      commit('setSearchedMeals', response.data.meals)
+    }
   } catch (error) {
     console.log('getMealsByLetter action error', error)
-    commit('setSearchedMeals', []) // reset meal details, i.e details -> home -> details
+    commit('setSearchedMeals', []) // reset meal details
+  }
+}
+
+export async function searchMealsByIngredient({ commit }, ingredient) {
+  try {
+    if (!ingredient) throw new Error('no ingredient')
+    const response = await axiosClient.get(`/filter.php?i=${ingredient}`)
+    if (response.data.meals === null) {
+      commit('setSearchedMeals', [])
+    } else {
+      commit('setSearchedMeals', response.data.meals)
+    }
+  } catch (error) {
+    console.log('searchMealsByIngredient action error', error)
+    commit('setSearchedMeals', [])
   }
 }
