@@ -42,18 +42,32 @@
           Clear
         </button>
       </div>
-      <MealList :meals="meals" />
+
+      <!-- Searched Meals -->
+      <MealList :meals="meals" v-if="meals.length !== 0" />
+      <!-- Random Meals -->
+      <div v-if="meals.length === 0 && randomMeals">
+        <h2 class="mb-4 text-orange-500 text-4xl font-bold">Random Meals</h2>
+        <MealList :meals="randomMeals" />
+      </div>
+      <!-- Loading -->
+      <div v-if="fetchStatus === 'loading'">
+        <LoadingSpinner />
+      </div>
     </div>
   </div>
 </template>
 
 <!-- composition api -->
 <script setup>
-import { computed, ref, onUnmounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import store from '../store'
 import MealList from '../components/MealList.vue'
+import LoadingSpinner from '../components/LoadingSpinner.vue'
 
 const meals = computed(() => store.state.searchedMeals)
+const randomMeals = computed(() => store.state.randomMeals)
+const fetchStatus = computed(() => store.state.fetchStatus)
 
 // search
 const searchValue = ref('')
@@ -74,6 +88,11 @@ function clearResults() {
   searchValue.value = ''
   store.dispatch('resetSearchedMeals')
 }
+
+onMounted(() => {
+  if (randomMeals.value.length > 0) return
+  store.dispatch('getRandomMeals')
+})
 
 onUnmounted(() => {
   store.dispatch('resetSearchedMeals')

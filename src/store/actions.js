@@ -1,6 +1,7 @@
 import { axiosClient } from '../axiosClient'
 
 export async function searchMeals({ commit }, keyword) {
+  commit('setFetchStatus', 'loading')
   try {
     if (!keyword) return new Error('no keyword')
     const response = await axiosClient.get(`search.php?s=${keyword}`)
@@ -27,6 +28,7 @@ export function resetMealDetails({ commit }) {
 }
 
 export async function getMealDetails({ commit }, id) {
+  commit('setFetchStatus', 'loading')
   try {
     if (!id) throw new Error('no id')
     const response = await axiosClient.get(`/lookup.php?i=${id}`)
@@ -40,6 +42,7 @@ export async function getMealDetails({ commit }, id) {
 
 export async function searchMealsByLetter({ commit }, letter) {
   // console.log('searchMealsByLetter letter', letter) // M
+  commit('setFetchStatus', 'loading')
   try {
     if (!letter) throw new Error('no letter')
     const response = await axiosClient.get(`/search.php?f=${letter}`)
@@ -58,6 +61,7 @@ export async function searchMealsByLetter({ commit }, letter) {
 }
 
 export async function searchMealsByIngredient({ commit }, ingredient) {
+  commit('setFetchStatus', 'loading')
   try {
     if (!ingredient) throw new Error('no ingredient')
     const response = await axiosClient.get(`/filter.php?i=${ingredient}`)
@@ -69,5 +73,25 @@ export async function searchMealsByIngredient({ commit }, ingredient) {
   } catch (error) {
     console.log('searchMealsByIngredient action error', error)
     commit('setSearchedMeals', [])
+  }
+}
+
+export async function getRandomMeals({ commit }) {
+  const randomMeals = []
+  commit('setFetchStatus', 'loading')
+  try {
+    for (let i = 0; i < 10; i++) {
+      const randomMeal = await axiosClient.get('random.php')
+      // debugger
+      // data:
+      // meals: {idMeal: '52995', strMeal: 'BBQ Pork Sloppy Joes', strDrinkAlternate: null, strCategory: 'Pork', strArea: 'American', …}
+      // headers: AxiosHeaders {content-type: 'application/json'}
+      // status: 200
+      // statusText: ""
+      randomMeals.push(randomMeal.data.meals[0])
+    }
+    commit('setRandomMeals', randomMeals)
+  } catch (error) {
+    console.log('getRandomMeals error', error)
   }
 }
