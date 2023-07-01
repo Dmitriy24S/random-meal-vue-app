@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^1.4.0",
     "lodash": "^4.17.21",
+    "oh-vue-icons": "^1.0.0-rc3",
     "vue": "^3.2.47",
     "vue-router": "^4.2.2",
     "vuex": "^4.1.0"

@@ -1,6 +1,6 @@
 <template>
   <svg
-    class="animate-spin h-10 w-10 text-orange-500 mx-auto"
+    class="animate-spin h-10 w-10 text-orange-500 mx-auto mb-4"
     viewBox="0 0 24 24"
     fill="none"
   >

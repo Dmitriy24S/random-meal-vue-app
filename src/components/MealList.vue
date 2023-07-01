@@ -1,7 +1,13 @@
 <template>
-  <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-2">
+  <!-- Loading -->
+  <div v-if="fetchStatus === 'loading'">
+    <LoadingSpinner />
+  </div>
+  <!-- Meals -->
+  <div v-else class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-2">
     <MealPreviewCard v-for="meal of meals" :key="meal.idMeal" :meal="meal" />
   </div>
+  <!-- No Meals -->
   <div
     v-if="!meals.length && fetchStatus === 'done'"
     class="flex justify-center text-gray-600 p-8"
@@ -13,7 +19,7 @@
 <script setup>
 import store from '../store'
 import MealPreviewCard from './MealPreviewCard.vue'
-
+import LoadingSpinner from './LoadingSpinner.vue'
 import { computed } from 'vue'
 
 const { meals } = defineProps({
