@@ -7,6 +7,7 @@
           id="search"
           :placeholder="`Search for meal by ${searchType}`"
           v-model="searchValue"
+          @input="handleSearchInput"
           class="rounded w-72 placeholder:text-gray-400 focus:outline-none focus:shadow-none focus:ring-0 focus:border-0 border-0"
         />
         <button
@@ -42,10 +43,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, toRef, computed } from 'vue'
+import { debounce } from 'lodash'
+
 import store from '../store'
 
-const { searchType, searchFn } = defineProps({
+const props = defineProps({
   searchType: {
     required: true,
     type: String,
@@ -54,15 +57,31 @@ const { searchType, searchFn } = defineProps({
     required: true,
     type: Function,
   },
+  selectedIngredient: {
+    required: false,
+    type: String,
+    // default: '',
+    default: null,
+  },
 })
 
-const searchValue = ref('')
-const searchQuery = ref('')
+const { searchType, searchFn } = props
+const searchValue = ref('') // input value
+const searchQuery = computed(() => store.state.searchQuery) // active search query
+const selectedIngredientRef = toRef(props, 'selectedIngredient')
+const searchedMeals = computed(() => store.state.searchedMeals)
+
+const handleSearchInput = debounce(() => {
+  console.log('Debounce! searchValue:', searchValue.value)
+  if (searchType === 'name') return // prevent updating search query on Home page when searching by name, wait for submission, and show random meals before submission
+  if (searchedMeals.value.length > 0) return // prevent updating search query if showing active search results, change only input without updaing search query
+  store.dispatch('updateSearchQuery', searchValue.value)
+}, 300)
 
 function searchMeals() {
   if (!searchValue.value.trim()) return
-  searchQuery.value = searchValue.value
   searchFn(searchValue.value)
+  store.dispatch('updateSearchQuery', searchValue.value)
 }
 
 function clearInput() {
@@ -70,8 +89,11 @@ function clearInput() {
 }
 
 function clearResults() {
-  searchQuery.value = ''
   searchValue.value = ''
   store.dispatch('resetSearchedMeals')
 }
+
+watch(selectedIngredientRef, (newValue) => {
+  searchValue.value = newValue // input value, update input with selected ingredient from MealsByIngredients component/page
+})
 </script>

@@ -1,8 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <!-- Search -->
     <Searchbar :searchType="'name'" :searchFn="searchMealsByName" />
-    <!-- Meals -->
     <!-- Searched Meals -->
     <MealList :meals="meals" v-if="meals.length !== 0" />
     <!-- Random Meals -->

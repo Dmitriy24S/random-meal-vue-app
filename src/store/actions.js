@@ -20,6 +20,7 @@ export async function searchMeals({ commit }, keyword) {
 export function resetSearchedMeals({ commit }) {
   commit('setSearchedMeals', [])
   commit('setFetchStatusIdle')
+  commit('setSearchQuery', '')
 }
 
 export function resetMealDetails({ commit }) {
@@ -94,4 +95,8 @@ export async function getRandomMeals({ commit }) {
   } catch (error) {
     console.log('getRandomMeals error', error)
   }
+}
+
+export function updateSearchQuery({ commit }, query) {
+  commit('setSearchQuery', query)
 }

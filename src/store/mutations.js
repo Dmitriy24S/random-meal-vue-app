@@ -21,3 +21,7 @@ export function setFetchStatus(state, status) {
   // idle | loading | done
   state.fetchStatus = status
 }
+
+export function setSearchQuery(state, query) {
+  state.searchQuery = query
+}

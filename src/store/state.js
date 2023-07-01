@@ -3,4 +3,5 @@ export default {
   mealDetails: null,
   fetchStatus: 'idle', // idle | loading | done
   randomMeals: [],
+  searchQuery: '',
 }
