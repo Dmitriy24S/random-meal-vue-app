@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-md shadow-sm hover:-translate-y-1 transition duration-300 overflow-hidden bg-white"
+    class="rounded-md shadow-sm hover:-translate-y-1 transition duration-300 will-change-transform overflow-hidden bg-white"
     @click="redirectToMealDetails($event, meal.idMeal)"
   >
     <img
