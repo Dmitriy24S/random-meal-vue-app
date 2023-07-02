@@ -9,7 +9,7 @@
       <div class="flex justify-between gap-2 items-center">
         <h2 class="mb-4 text-orange-500 text-4xl font-bold">Random Meals</h2>
         <!-- Refresh meals button -->
-        <div class="relative">
+        <Tooltip :text="'Refresh random meals'" :showTooltip="showTooltip">
           <button
             type="button"
             aria-label="Refresh random meals"
@@ -23,23 +23,7 @@
           >
             <v-icon name="hi-refresh" scale="1.3" />
           </button>
-          <!-- Refresh button tooltip -->
-          <Transition
-            enter-active-class="duration-300 ease-out"
-            enter-from-class="transform opacity-0"
-            enter-to-class="opacity-100"
-            leave-active-class="duration-200 ease-in"
-            leave-from-class="opacity-100"
-            leave-to-class="transform opacity-0"
-          >
-            <div
-              v-if="showTooltip"
-              class="absolute bg-slate-900 text-white bottom-full right-0 px-2 py-1 rounded-md whitespace-nowrap"
-            >
-              Refresh random meals
-            </div>
-          </Transition>
-        </div>
+        </Tooltip>
       </div>
       <MealList :meals="randomMeals" />
     </div>
@@ -52,6 +36,7 @@ import { computed, ref, onMounted, onUnmounted } from 'vue'
 import store from '../store'
 import MealList from '../components/MealList.vue'
 import Searchbar from '../components/Searchbar.vue'
+import Tooltip from '../components/Tooltip.vue'
 
 const meals = computed(() => store.state.searchedMeals)
 const randomMeals = computed(() => store.state.randomMeals)
