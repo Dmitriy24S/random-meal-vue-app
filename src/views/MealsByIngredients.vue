@@ -5,9 +5,12 @@
       :searchFn="searchMealsByIngredient"
       :selectedIngredient="searchQuery"
     />
-    <MealList :meals="meals" v-if="meals.length > 0" />
+    <MealList :meals="meals" v-if="searchQuery.length > 0" />
     <!-- all ingredients -->
-    <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+    <div
+      v-if="computedIngredients.length > 0 && meals.length === 0"
+      class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2"
+    >
       <button
         v-for="ingredient of computedIngredients"
         :key="ingredient.idIngredient"
