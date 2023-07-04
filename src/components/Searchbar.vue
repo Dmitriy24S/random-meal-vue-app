@@ -10,7 +10,7 @@
         v-model="searchValue"
         @input="handleSearchInput"
         ref="searchInputRef"
-        class="rounded sm:w-80 placeholder:text-gray-400 focus:outline-none focus:shadow-none focus:ring-0 border-transparent border-2 sm:pr-24 pr-8 sm:focus:border-transparent"
+        class="rounded w-72 sm:w-[21rem] placeholder:text-gray-400 focus:outline-none focus:shadow-none focus:ring-0 border-transparent border-2 sm:pr-24 pl-2 pr-8 sm:focus:border-transparent"
       />
       <button
         type="button"
